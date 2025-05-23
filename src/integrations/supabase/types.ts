@@ -9,7 +9,278 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      accounts: {
+        Row: {
+          created_at: string
+          current_balance: number
+          id: string
+          initial_balance: number
+          name: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          current_balance?: number
+          id?: string
+          initial_balance?: number
+          name: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          current_balance?: number
+          id?: string
+          initial_balance?: number
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      clients_suppliers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          observations: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          observations?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          observations?: string | null
+          type?: string
+        }
+        Relationships: []
+      }
+      payable_accounts: {
+        Row: {
+          category_id: string
+          created_at: string
+          due_date: string
+          id: string
+          installment_type: string
+          installments: number | null
+          is_paid: boolean
+          observations: string | null
+          paid_date: string | null
+          parent_id: string | null
+          recurrence_count: number | null
+          recurrence_type: string | null
+          supplier_id: string
+          value: number
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          due_date: string
+          id?: string
+          installment_type: string
+          installments?: number | null
+          is_paid?: boolean
+          observations?: string | null
+          paid_date?: string | null
+          parent_id?: string | null
+          recurrence_count?: number | null
+          recurrence_type?: string | null
+          supplier_id: string
+          value: number
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          installment_type?: string
+          installments?: number | null
+          is_paid?: boolean
+          observations?: string | null
+          paid_date?: string | null
+          parent_id?: string | null
+          recurrence_count?: number | null
+          recurrence_type?: string | null
+          supplier_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payable_accounts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payable_accounts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "payable_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payable_accounts_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "clients_suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      receivable_accounts: {
+        Row: {
+          category_id: string
+          client_id: string
+          created_at: string
+          due_date: string
+          id: string
+          installment_type: string
+          installments: number | null
+          is_received: boolean
+          observations: string | null
+          parent_id: string | null
+          received_date: string | null
+          recurrence_count: number | null
+          recurrence_type: string | null
+          value: number
+        }
+        Insert: {
+          category_id: string
+          client_id: string
+          created_at?: string
+          due_date: string
+          id?: string
+          installment_type: string
+          installments?: number | null
+          is_received?: boolean
+          observations?: string | null
+          parent_id?: string | null
+          received_date?: string | null
+          recurrence_count?: number | null
+          recurrence_type?: string | null
+          value: number
+        }
+        Update: {
+          category_id?: string
+          client_id?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          installment_type?: string
+          installments?: number | null
+          is_received?: boolean
+          observations?: string | null
+          parent_id?: string | null
+          received_date?: string | null
+          recurrence_count?: number | null
+          recurrence_type?: string | null
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receivable_accounts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "receivable_accounts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients_suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "receivable_accounts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "receivable_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          category_id: string
+          client_supplier_id: string
+          created_at: string
+          id: string
+          observations: string | null
+          payment_date: string
+          source_id: string | null
+          source_type: string
+          type: string
+          value: number
+        }
+        Insert: {
+          category_id: string
+          client_supplier_id: string
+          created_at?: string
+          id?: string
+          observations?: string | null
+          payment_date: string
+          source_id?: string | null
+          source_type: string
+          type: string
+          value: number
+        }
+        Update: {
+          category_id?: string
+          client_supplier_id?: string
+          created_at?: string
+          id?: string
+          observations?: string | null
+          payment_date?: string
+          source_id?: string | null
+          source_type?: string
+          type?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_client_supplier_id_fkey"
+            columns: ["client_supplier_id"]
+            isOneToOne: false
+            referencedRelation: "clients_suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
