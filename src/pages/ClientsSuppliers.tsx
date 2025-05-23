@@ -14,7 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 
 export default function ClientsSuppliers() {
-  const { clientsSuppliers, setClientsSuppliers } = useFinance();
+  const { clientsSuppliers, addClientSupplier, loading } = useFinance();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ClientSupplier | null>(null);
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ export default function ClientsSuppliers() {
     setEditingItem(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.type) {
@@ -45,33 +45,16 @@ export default function ClientsSuppliers() {
     }
 
     if (editingItem) {
-      setClientsSuppliers(prev => prev.map(item => 
-        item.id === editingItem.id 
-          ? {
-              ...item,
-              name: formData.name,
-              type: formData.type,
-              observations: formData.observations,
-            }
-          : item
-      ));
+      // TODO: Implementar função de update no contexto
       toast({
-        title: "Sucesso",
-        description: `${formData.type === 'cliente' ? 'Cliente' : 'Fornecedor'} atualizado com sucesso!`
+        title: "Info",
+        description: "Função de edição será implementada em breve",
       });
     } else {
-      const newItem: ClientSupplier = {
-        id: Date.now().toString(),
+      await addClientSupplier({
         name: formData.name,
         type: formData.type,
         observations: formData.observations,
-        createdAt: new Date(),
-      };
-
-      setClientsSuppliers(prev => [...prev, newItem]);
-      toast({
-        title: "Sucesso",
-        description: `${formData.type === 'cliente' ? 'Cliente' : 'Fornecedor'} criado com sucesso!`
       });
     }
 
@@ -91,16 +74,29 @@ export default function ClientsSuppliers() {
 
   const handleDelete = (id: string) => {
     if (confirm('Tem certeza que deseja excluir este item?')) {
-      setClientsSuppliers(prev => prev.filter(item => item.id !== id));
+      // TODO: Implementar função de delete no contexto
       toast({
-        title: "Sucesso",
-        description: "Item excluído com sucesso!"
+        title: "Info",
+        description: "Função de exclusão será implementada em breve",
       });
     }
   };
 
   const clients = clientsSuppliers.filter(item => item.type === 'cliente');
   const suppliers = clientsSuppliers.filter(item => item.type === 'fornecedor');
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold text-tertiary">Clientes & Fornecedores</h1>
+        <Card>
+          <CardContent className="text-center py-8">
+            <p className="text-gray-500">Carregando...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
