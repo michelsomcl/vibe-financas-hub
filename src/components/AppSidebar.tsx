@@ -2,7 +2,7 @@
 import { 
   Home, 
   CreditCard, 
-  Category, 
+  FolderOpen, 
   Users, 
   FileText, 
   FileCheck, 
@@ -35,7 +35,7 @@ const menuItems = [
   {
     title: "Categorias",
     url: "/categories",
-    icon: Category,
+    icon: FolderOpen,
   },
   {
     title: "Clientes/Fornecedores",
