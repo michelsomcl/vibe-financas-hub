@@ -32,8 +32,8 @@ export default function Transactions() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -56,12 +56,12 @@ export default function Transactions() {
     }
 
     // Filtro por categoria
-    if (categoryFilter) {
+    if (categoryFilter && categoryFilter !== 'all') {
       filtered = filtered.filter(transaction => transaction.categoryId === categoryFilter);
     }
 
     // Filtro por tipo
-    if (typeFilter) {
+    if (typeFilter && typeFilter !== 'all') {
       filtered = filtered.filter(transaction => transaction.type === typeFilter);
     }
 
@@ -146,8 +146,8 @@ export default function Transactions() {
 
   const clearFilters = () => {
     setSearchTerm('');
-    setCategoryFilter('');
-    setTypeFilter('');
+    setCategoryFilter('all');
+    setTypeFilter('all');
     setStartDate('');
     setEndDate('');
   };
@@ -238,7 +238,7 @@ export default function Transactions() {
                 <SelectValue placeholder="Tipo" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos</SelectItem>
+                <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="receita">Receita</SelectItem>
                 <SelectItem value="despesa">Despesa</SelectItem>
               </SelectContent>
@@ -249,7 +249,7 @@ export default function Transactions() {
                 <SelectValue placeholder="Categoria" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todas</SelectItem>
+                <SelectItem value="all">Todas</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
